@@ -23,3 +23,17 @@ docker pull wyatt6/one-monitor:1.0
 docker run --name one-monitor -d -p 8000:8000/tcp --restart=unless-stopped -e TZ="Asia/Shanghai" wyatt6/one-monitor:1.0
 ```
 
+如果没有创建后台网络，则：
+
+```shell
+docker network create back-net
+```
+
+后台服务加入网络并重启容器
+
+```shell
+docker network connect back-net one-monitor
+docker restart one-monitor
+```
+
+
