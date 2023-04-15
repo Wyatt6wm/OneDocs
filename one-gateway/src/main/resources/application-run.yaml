@@ -1,0 +1,23 @@
+server:
+  port: 8010
+spring:
+  application:
+    name: one-gateway
+  boot:
+    # 服务监控
+    admin:
+      client:
+        url: "http://one-monitor:8000"
+  cloud:
+    # 服务注册
+    consul:
+      host: one-registry
+      port: 8500
+      discovery:
+        serviceName: ${spring.application.name} # 注册的服务名
+# 服务监控开放健康检查接口
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # 全部开放
