@@ -1,0 +1,23 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: one-monitor
+  boot:
+    # 服务监控（自我注册）
+    admin:
+      client:
+        url: "http://localhost:8000"
+  cloud:
+    # 服务注册
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        serviceName: ${spring.application.name} # 注册的服务名
+# 服务监控开放健康检查接口
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # 全部开放
