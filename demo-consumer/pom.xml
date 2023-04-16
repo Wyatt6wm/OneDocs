@@ -36,6 +36,12 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- ZipKin -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+            <version>2.2.8.RELEASE</version>
+        </dependency>
         <!-- Feign声明式服务调用客户端 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
