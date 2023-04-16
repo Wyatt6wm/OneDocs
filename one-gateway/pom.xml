@@ -7,13 +7,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.2</version>
+        <!-- Zuul依赖最高只有2.2.10.RELEASE，为了匹配降低Spring Boot版本 -->
+        <version>2.2.10.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>run.wyatt</groupId>
     <artifactId>one-gateway</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
     <name>one-gateway</name>
 
@@ -29,8 +30,8 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <!-- Spring Cloud 2020.0.X匹配Spring Boot 2.5.X -->
-                <version>2020.0.6</version>
+                <!-- Spring Cloud Hoxton匹配Spring Boot 2.2.X -->
+                <version>Hoxton.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -42,18 +43,16 @@
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-client</artifactId>
-            <version>2.5.2</version>
+            <version>2.2.4</version>
         </dependency>
         <!-- 服务注册中心客户端  -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-consul-discovery</artifactId>
         </dependency>
-        <!-- Zuul网关，由于最新只有2.2.10.RELEASE版本，需要显式声明版本号 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
-            <version>2.2.10.RELEASE</version>
         </dependency>
     </dependencies>
 

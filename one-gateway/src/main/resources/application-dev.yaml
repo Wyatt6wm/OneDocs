@@ -1,5 +1,7 @@
 server:
   port: 8010
+zuul:
+  prefix: /api
 spring:
   application:
     name: one-gateway
@@ -21,3 +23,6 @@ management:
     web:
       exposure:
         include: "*"  # 全部开放
+  endpoint:
+    health:
+      show-details: ALWAYS
