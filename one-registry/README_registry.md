@@ -9,7 +9,7 @@ docker run --name one-registry -d -p 8500:8500 --restart=unless-stopped consul:1
 
 # 接入后台网络
 
-，如果没有创建后台网络，则：
+如果没有创建后台网络，则：
 
 ```shell
 docker network create back-net
