@@ -1,4 +1,4 @@
-# Nginx的简单使用说明
+# 1. Nginx的简单使用说明
 
 在[https://hub.docker.com/](https://hub.docker.com/)镜像仓库搜索Nginx官方发布的Nginx镜像。阅读Nginx镜像的使用说明，获取以下有用信息：
 
@@ -9,7 +9,7 @@
 5. Nginx还可以用只读模式或调试模式运行，但是这里暂不需要用到这个特性。
 6. 还有其他诸如非root运行Nginx的这里也暂不需要，因此就不写了。
 
-# 运行Nginx容器服务
+# 2. 运行Nginx容器服务
 
 拉取Nginx镜像：
 
@@ -17,7 +17,7 @@
 docker pull nginx:1.21.6
 ```
 
-## 云服务器上运行
+## 2.1. 云服务器上运行
 
 在云服务商为自己的域名申请免费SSL证书，下载证书文件（下载时选择服务器类型为Nginx即可），获得下面的4种文件上传到轻量应用服务器的`/root/nginx/ssl_cert/`目录下：
 
@@ -47,7 +47,7 @@ docker run --name nginx -d -v /root/nginx/ssl_cert:/etc/nginx/ssl_cert:rw -v /ro
 
 修改配置文件`/root/nginx/nginx.conf`，监听用于HTTPS服务的443端口，配置用于解密的证书和密钥文件，即可通过HTTPS协议访问。除此之外，通常还会把通过HTTP服务的80端口的访问，自动转发到443端口，详细的配置内容参见本目录下的配置文件`nginx.conf`。重启nginx容器。
 
-## Windows本地开发环境运行
+## 2.2. Windows本地开发环境运行
 
 如果不需要在本地开发，可以忽略本节内容。
 
