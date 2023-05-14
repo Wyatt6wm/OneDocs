@@ -49,7 +49,7 @@ docker run --name nginx -d -v /root/nginx/ssl_cert:/etc/nginx/ssl_cert:rw -v /ro
 
 ## Windows本地开发环境运行
 
-如果不需要在v本地开发，可以忽略本节内容。
+如果不需要在本地开发，可以忽略本节内容。
 
 从[https://github.com/FiloSottile/mkcert](https://github.com/FiloSottile/mkcert)下载`mkcert`工具，下载下来的exe文件`mkcert-v1.4.4-windows-amd64.exe`重命名为`mkcert.exe`。用它生成证书文件，参考上一节在云服务商获取的SSL证书，只需要用到crt文件和key文件，所以这里只需要为Windows本地开发环境生成这两个文件：
 
