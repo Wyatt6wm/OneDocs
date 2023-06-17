@@ -148,3 +148,44 @@ docker pull wyatt6/oneplatform-monitor:1.0
 docker run --name oneplatform-monitor -d -p 8001:8001/tcp --net oneplatform-net --restart=unless-stopped -e TZ="Asia/Shanghai" wyatt6/oneplatform-monitor:1.0
 ```
 
+### 2.5. 构建公共模块jar包
+
+IDEA maven install构建`oneplatform-common`模块jar包。
+
+### 2.6. 部署服务网关
+
+PS：注意以下命令中的版本号。
+
+1. 修改`application.yaml`将环境变量改`run`：
+
+```yaml
+sys:
+  env: run
+```
+
+2. IDEA maven install构建jar包。
+
+3. 在项目根目录（`Dockerfile`文件所在目录）执行镜像构建命令：
+
+```shell
+docker build -t wyatt6/oneplatform-gateway:1.0 ./
+```
+
+4. 推送到dockerhub镜像仓库：
+
+```shell
+docker push wyatt6/oneplatform-gateway:1.0
+```
+
+5. 拉取镜像：
+
+```shell
+docker pull wyatt6/oneplatform-gateway:1.0
+```
+
+6. 启动容器：
+
+```shell
+docker run --name oneplatform-gateway -d -p 8000:8000/tcp --net oneplatform-net --restart=unless-stopped -e TZ="Asia/Shanghai" wyatt6/oneplatform-gateway:1.0
+```
+
