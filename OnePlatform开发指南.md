@@ -66,3 +66,71 @@ public class Application {
 }
 ```
 
+## 服务监控
+
+### 1. 引入依赖包
+
+```xml
+<!-- ========== 微服务框架 ========== -->
+<!-- Spring Boot -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+</dependency>
+<!-- Spring Boot Actuator服务注册和服务监控都用到 -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+<!-- 服务监控中心客户端 -->
+<dependency>
+    <groupId>de.codecentric</groupId>
+    <artifactId>spring-boot-admin-client</artifactId>
+    <version>2.5.2</version>
+</dependency>
+```
+
+### 2. 添加配置
+
+`application.yaml`
+
+```yaml
+spring:
+  application:
+    name: 微服务名称（应用名称）
+  boot:
+    # 服务监控
+    admin:
+      client:
+        url: http://${sys.op-monitor.domain}
+# 为服务监控中心开放健康检查接口，即对/actuator/*路径的访问
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+```
+
+`application-dev.yaml`
+
+```yaml
+sys:
+  op-monitor:
+    host: oneplatform-monitor
+    port: 8001
+    domain: ${sys.op-monitor.host}:${sys.op-monitor.port}
+```
+
+`application-local.yaml`和`application-run.yaml`
+
+```yaml
+sys:
+  op-monitor:
+    host: localhost
+    port: 8001
+    domain: ${sys.op-monitor.host}:${sys.op-monitor.port}
+```
+
