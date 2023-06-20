@@ -162,7 +162,7 @@ IDEA maven install构建`oneplatform-common`模块jar包。
 
 PS：注意以下命令中的版本号。
 
-1. 修改`application.yaml`将环境变量改未`run`：
+1. 修改`application.yaml`将环境变量改为`run`：
 
 ```yaml
 sys:
@@ -205,7 +205,7 @@ docker network connect oneplatform-access oneplatform-gateway
 
 PS：注意以下命令中的版本号。
 
-1. 修改`application.yaml`将环境变量，**本地运行**改为`local`，**云服务器运行**改未`run`：
+1. 修改`application.yaml`将环境变量，**本地运行**改为`local`，**云服务器运行**改为`run`：
 
 ```yaml
 sys:
