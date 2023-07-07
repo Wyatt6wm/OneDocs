@@ -367,52 +367,6 @@ JSON
 }
 ```
 
-#### 2.1.7. 获取用户权限列表
-
-##### 未登录
-
-##### 数据库错误
-
-##### 获取权限成功
-
-```json
-{
-	"succ": true,
-    "data": {
-        "auths": [
-        	"权限标识符1",
-            "权限标识符2"
-        ] 
-    }
-}
-```
-
-
-
-```json
-{
-    "succ": true,
-    "data": {
-        "authDetails": [
-            {
-                "id": 1,
-                "identifier": "view:xxxxx",
-                "name": "XXXXX权限",
-                "description": "权限说明",
-                "activated": true
-            },
-            {
-                "id": 2,
-                "identifier": "api:xxxxx",
-                "name": "XXXXX权限",
-                "description": "权限说明",
-                "activated": false
-            }
-        ]
-    }
-}
-```
-
 
 
 
