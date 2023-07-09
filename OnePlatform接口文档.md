@@ -143,7 +143,7 @@ JSON
 - 请求路径：/api/sys/user/logout
 - 请求方法：get
 - 请求参数：无
-- 权限验证：已登录
+- 权限验证：无
 - 响应数据：
 
 ###### 未登录
@@ -264,7 +264,18 @@ JSON
 }
 ```
 
-##### 1.3.2. 删除角色
+##### 1.3.2. 变更角色授权
+
+- 请求路径：/api/sys/role/removeRole
+- 请求方法：get
+- 请求参数：
+
+
+
+- 权限验证：已登录，超级管理员角色
+- 响应数据：
+
+##### 1.3.3. 删除角色
 
 - 请求路径：/api/sys/role/removeRole
 - 请求方法：get
@@ -285,7 +296,7 @@ JSON
 
 ###### 删除角色成功
 
-##### 1.3.3. 编辑角色
+##### 1.3.4. 编辑角色
 
 - 请求路径：/api/sys/role/editRole
 - 请求方法：get
@@ -329,7 +340,7 @@ JSON
 }
 ```
 
-##### 1.3.4. 获取角色列表
+##### 1.3.5. 获取角色列表
 
 - 请求路径：/api/sys/role/getRoleList
 - 请求方法：get
@@ -359,6 +370,49 @@ JSON
                 "name": "角色名称",
                 "description": "角色说明",
                 "activated": true
+            }
+        ]
+    }
+}
+```
+
+##### 1.3.6. 获取角色所有的权限
+
+- 请求路径：/api/sys/role/getRoleAuths
+- 请求方法：get
+- 请求参数：
+
+| 参数 | 说明   | 备注   |
+| ---- | ------ | ------ |
+| id   | 角色ID | 必填。 |
+
+- 权限验证：已登录，超级管理员角色
+- 响应数据：
+
+###### 请求参数错误
+
+###### 数据库错误
+
+###### 获取角色所有的权限成功
+
+```json
+{
+    "succ": true,
+    "data": {
+        "authList": [
+            {
+                "id": 1,
+                "identifier": "view:xxxxx",
+                "name": "XXXXX权限",
+                "description": "权限说明",
+                "activated": true
+            },
+            {
+                "id": 2,
+                "identifier": "api:xxxxx",
+                "name": "XXXXX权限",
+                "description": "权限说明",
+                "activated": false
             }
         ]
     }
