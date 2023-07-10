@@ -86,6 +86,17 @@ JSON
 
 ###### 注册成功
 
+```json
+{
+    "succ": true,
+    "data": {
+        "id": 1,
+        "username": "username",
+        "password": null
+    }
+}
+```
+
 ##### 1.2.2. 登录认证
 
 - 请求路径：/api/sys/user/login
