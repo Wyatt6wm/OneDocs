@@ -266,7 +266,7 @@ JSON
 
 ##### 1.3.2. 变更角色授权
 
-- 请求路径：/api/sys/role/removeRole
+- 请求路径：/api/sys/role/changeRoleGrants
 - 请求方法：get
 - 请求参数：
 
