@@ -90,9 +90,10 @@ JSON
 {
     "succ": true,
     "data": {
-        "id": 1,
-        "username": "username",
-        "password": null
+        "user": {
+        	"id": 1,
+        	"username": "用户名"
+        }
     }
 }
 ```
