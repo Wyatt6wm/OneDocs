@@ -255,6 +255,48 @@ JSON
 
 ###### 昵称已被占用
 
+##### 1.2.8. 获取用户列表
+
+- 请求路径：/api/sys/role/addRole
+- 请求方法：post
+- 请求参数：无
+- 权限验证：已登录，超级管理员角色、管理员角色
+- 响应数据：
+
+###### 数据库错误
+
+###### 获取用户列表成功
+
+```json
+{
+    "succ": true,
+    "data": {
+        "userList": [
+            {
+                "user": {
+                    "id": 1,
+                    "username": "username",
+                    "nickname": "nickname",
+                    "motto": "mottto",
+                    "avatar": "avatar"
+                },
+                "roleNames": ["role1", "role2", "role3"]
+            },
+            {
+                "user": {
+                    "id": 2,
+                    "username": "username2",
+                    "nickname": "nickname2",
+                    "motto": "mottto2",
+                    "avatar": "avatar2"
+                },
+                "roleNames": ["role4", "role5", "role6"]
+            }
+        ]
+    }
+}
+```
+
 #### 1.3. RoleController
 
 ##### 1.3.1. 新增角色
