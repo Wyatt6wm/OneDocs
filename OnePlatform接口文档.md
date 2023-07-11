@@ -164,7 +164,7 @@ JSON
 
 ##### 1.2.4. 查询用户角色标识
 
-- 请求路径：/api/sys/user/getRolesOfUser
+- 请求路径：/api/sys/user/getRoleIdentifiers
 - 请求方法：get
 - 请求参数：无
 - 权限验证：已登录
@@ -188,7 +188,7 @@ JSON
 
 ##### 1.2.5. 查询用户权限标识
 
-- 请求路径：/api/sys/user/getAuthsOfUser
+- 请求路径：/api/sys/user/getAuthIdentifiers
 - 请求方法：get
 - 请求参数：无
 - 权限验证：已登录
