@@ -21,6 +21,12 @@ docker network create oneplatform-access
 docker network create oneplatform-net
 ```
 
+创建必要的目录：
+
+- `mkdir -p /root/one-platform/mysql`
+- `mkdir -p /root/one-platform/configs`
+- `mkdir -p /root/one-platform/logs`
+
 ### 2.1. 部署MySQL数据库
 
 1. 拉取MySQL 8.0.29数据库镜像：
@@ -129,7 +135,7 @@ sys:
   env: run
 ```
 
-2. IDEA maven intall构建jar包。
+2. 删除target目录，IDEA maven intall构建jar包。
 3. 在项目根目录（`Dockerfile`文件所在目录）执行镜像构建命令：
 
 ```shell
@@ -169,7 +175,7 @@ sys:
   env: run
 ```
 
-2. IDEA maven install构建jar包。
+2. 删除target目录，IDEA maven install构建jar包。
 
 3. 在项目根目录（`Dockerfile`文件所在目录）执行镜像构建命令：
 
@@ -212,7 +218,7 @@ sys:
   env: local / run
 ```
 
-2. IDEA maven install构建jar包。
+2. 删除target目录，IDEA maven install构建jar包。
 3. 构建镜像并启动容器：
 
 **本地运行时**
@@ -226,7 +232,7 @@ docker build -t wyatt6/oneplatform-system:1.0.local ./
 启动容器：
 
 ```shell
-docker run --name oneplatform-system -d -p 8002:8002/tcp --net oneplatform-net --restart=unless-stopped -e TZ="Asia/Shanghai" wyatt6/oneplatform-system:1.0.local
+docker run --name oneplatform-system -v D:\WyattAppRealmMount\logs\oneplatform-system:/log:rw -d -p 8002:8002/tcp --net oneplatform-net --restart=unless-stopped -e TZ="Asia/Shanghai" wyatt6/oneplatform-system:1.0.local
 ```
 
 **云服务器运行时**
@@ -259,7 +265,7 @@ publicKey:MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAfsafdsO415jvpWVs4G0NJKmokmkO54J2jVSpi
 password:NaJdfsMUDgD5M7FzRDGTekPxWoVORAUw29s0mkGIkksliEUurRp2n4oOyANqNkAgr6ZrwPbXC4ML4fJg==
 ```
 
-上传配置模板`application-run.yaml`到`/root/one-platform/config/system`目录下，并将前一步生成的公钥和密码填入配置文件：
+上传配置模板`application-run.yaml`到`/root/one-platform/configs/system`目录下，并将前一步生成的公钥和密码填入配置文件：
 
 ```yaml
 password: NaJdfsMUDgD5M7FzRDGTekPxWoVORAUw29s0mkGIkksliEUurRp2n4oOyANqNkAgr6ZrwPbXC4ML4fJg==
@@ -269,6 +275,6 @@ public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAfsafdsO415jvpWVs4G0NJKmokmkO54J2jVS
 启动容器：
 
 ```shell
-docker run --name oneplatform-system -v /root/one-platform/config/system/application-run.yaml:/application-run.yaml:rw -d -p 8002:8002/tcp --net oneplatform-net --restart=unless-stopped -e TZ="Asia/Shanghai" wyatt6/oneplatform-system:1.0
+docker run --name oneplatform-system -v /root/one-platform/configs/system/application-run.yaml:/application-run.yaml:rw -v /root/one-platform/logs:/log:rw -d -p 8002:8002/tcp --net oneplatform-net --restart=unless-stopped -e TZ="Asia/Shanghai" wyatt6/oneplatform-system:1.0
 ```
 
