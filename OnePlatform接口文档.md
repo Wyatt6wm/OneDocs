@@ -256,9 +256,28 @@ JSON
 
 ###### 昵称已被占用
 
-##### 1.2.8. 获取用户列表
+###### 修改用户信息失败
 
-- 请求路径：/api/sys/role/addRole
+###### 修改用户信息成功
+
+```json
+{
+    "succ": true,
+    "data": {
+        "profile": {
+            "id": 1,
+            "username": "用户名",
+            "nickname": "昵称",
+            "motto": "座右铭",
+            "avatar": "头像路径"
+        }
+    }
+}
+```
+
+##### 1.2.8. 获取用户管理列表
+
+- 请求路径：/api/sys/user/getUserManageList
 - 请求方法：post
 - 请求参数：无
 - 权限验证：已登录，超级管理员角色、管理员角色
@@ -266,13 +285,13 @@ JSON
 
 ###### 数据库错误
 
-###### 获取用户列表成功
+###### 获取用户管理列表成功
 
 ```json
 {
     "succ": true,
     "data": {
-        "userList": [
+        "userManageList": [
             {
                 "user": {
                     "id": 1,
@@ -281,7 +300,22 @@ JSON
                     "motto": "mottto",
                     "avatar": "avatar"
                 },
-                "roleNames": ["role1", "role2", "role3"]
+                "roles": [
+                    {
+                        "id": 1,
+                        "identifier": "角色标识符",
+                        "name": "角色名称",
+                        "description": "角色描述",
+                        "activated": 1
+                    }, 
+                    {
+                        "id": 2,
+                        "identifier": "角色标识符2",
+                        "name": "角色名称",
+                        "description": "角色描述",
+                        "activated": 0
+                    }
+                ]
             },
             {
                 "user": {
@@ -291,9 +325,81 @@ JSON
                     "motto": "mottto2",
                     "avatar": "avatar2"
                 },
-                "roleNames": ["role4", "role5", "role6"]
+                "roles": []
             }
         ]
+    }
+}
+```
+
+##### 1.2.9. 获取用户所有角色
+
+- 请求路径：/api/sys/user/getRolesOfUser
+- 请求方法：post
+- 请求参数：
+
+| 参数 | 说明   | 备注   |
+| ---- | ------ | ------ |
+| id   | 用户ID | 必填。 |
+
+- 权限验证：已登录，超级管理员角色
+- 响应数据：
+
+###### 请求参数错误
+
+###### 数据库错误
+
+###### 获取角色所有的权限成功
+
+```json
+{
+    "succ": true,
+    "data": {
+        "roles": [
+            {
+            	"id": 1,
+                "identifier": "角色标识符",
+                "name": "角色名称",
+                "description": "角色描述",
+                "activated": 1
+            }, 
+            {
+                "id": 2,
+                "identifier": "角色标识符2",
+                "name": "角色名称",
+                "description": "角色描述",
+                "activated": 0
+            }
+        ]
+    }
+}
+```
+
+##### 1.2.10. 变更角色绑定
+
+- 请求路径：/api/sys/user/changeBinds
+- 请求方法：get
+- 请求参数：
+
+| 参数       | 说明                 | 备注 |
+| ---------- | -------------------- | ---- |
+| userId     | 用户ID               |      |
+| bindList   | 待绑定角色ID列表     |      |
+| unbindList | 待解除绑定角色ID列表 |      |
+
+- 权限验证：已登录，超级管理员角色
+- 响应数据：
+
+###### 请求参数错误
+
+###### 变更角色绑定成功
+
+```json
+{
+    "succ": true,
+    "data" : {
+        "failBind" : [1, 2, 3],
+        "failUnbind": [4, 5, 6]
     }
 }
 ```
@@ -341,15 +447,15 @@ JSON
 
 ##### 1.3.2. 变更角色授权
 
-- 请求路径：/api/sys/role/changeRoleGrants
+- 请求路径：/api/sys/role/changeGrants
 - 请求方法：get
 - 请求参数：
 
-| 参数         | 说明                 | 备注 |
-| ------------ | -------------------- | ---- |
-| roleId       | 角色ID               |      |
-| grantList    | 待授权权限ID列表     |      |
-| disgrantList | 待解除授权权限ID列表 |      |
+| 参数        | 说明                 | 备注 |
+| ----------- | -------------------- | ---- |
+| roleId      | 角色ID               |      |
+| grantList   | 待授权权限ID列表     |      |
+| ungrantList | 待解除授权权限ID列表 |      |
 
 - 权限验证：已登录，超级管理员角色
 - 响应数据：
@@ -363,7 +469,7 @@ JSON
     "succ": true,
     "data" : {
         "failGrant" : [1, 2, 3],
-        "failDisgrant": [4, 5, 6]
+        "failUngrant": [4, 5, 6]
     }
 }
 ```
@@ -433,9 +539,9 @@ JSON
 }
 ```
 
-##### 1.3.5. 获取角色列表
+##### 1.3.5. 获取角色管理列表
 
-- 请求路径：/api/sys/role/getRoleList
+- 请求路径：/api/sys/role/getRoleManageList
 - 请求方法：get
 - 请求参数：无
 - 权限验证：已登录，超级管理员角色 / 管理员角色
@@ -443,13 +549,13 @@ JSON
 
 ###### 数据库错误
 
-###### 获取角色列表成功
+###### 获取角色管理列表成功
 
 ```json
 {
     "succ": true,
     "data": {
-        "roleList": [
+        "roleManageList": [
             {
                 "id": 1,
                 "identifier": "角色标识",
@@ -469,9 +575,9 @@ JSON
 }
 ```
 
-##### 1.3.6. 获取角色所有的权限
+##### 1.3.6. 获取角色所有权限
 
-- 请求路径：/api/sys/role/getRoleAuths
+- 请求路径：/api/sys/role/getAuthsOfRole
 - 请求方法：get
 - 请求参数：
 
@@ -492,7 +598,7 @@ JSON
 {
     "succ": true,
     "data": {
-        "authList": [
+        "auths": [
             {
                 "id": 1,
                 "identifier": "view:xxxxx",
@@ -618,9 +724,9 @@ JSON
 }
 ```
 
-##### 1.4.4. 获取权限列表
+##### 1.4.4. 获取权限管理列表
 
-- 请求路径：/api/sys/auth/getAuthList
+- 请求路径：/api/sys/auth/getAuthManageList
 - 请求方法：get
 - 请求参数：无
 - 权限验证：已登录，超级管理员角色 / 管理员角色
@@ -628,13 +734,13 @@ JSON
 
 ###### 数据库错误
 
-###### 获取权限列表成功
+###### 获取权限管理列表成功
 
 ```json
 {
     "succ": true,
     "data": {
-        "authList": [
+        "authManageList": [
             {
                 "id": 1,
                 "identifier": "view:xxxxx",
