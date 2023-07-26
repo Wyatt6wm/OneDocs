@@ -477,7 +477,7 @@ JSON
 ##### 1.3.2. 变更角色授权
 
 - 请求路径：/api/sys/role/changeGrants
-- 请求方法：get
+- 请求方法：post
 - 请求参数：
 
 | 参数        | 说明                 | 备注 |
@@ -509,9 +509,9 @@ JSON
 - 请求方法：get
 - 请求参数：
 
-| 参数 | 说明   | 备注   |
-| ---- | ------ | ------ |
-| id   | 角色ID | 必填。 |
+| 参数   | 说明   | 备注   |
+| ------ | ------ | ------ |
+| roleId | 角色ID | 必填。 |
 
 - 权限验证：已登录，超级管理员角色
 - 响应数据：
@@ -527,12 +527,12 @@ JSON
 ##### 1.3.4. 编辑角色
 
 - 请求路径：/api/sys/role/editRole
-- 请求方法：get
+- 请求方法：post
 - 请求参数：
 
 | 参数        | 说明       | 备注                 |
 | ----------- | ---------- | -------------------- |
-| id          | 角色ID     | 必填。               |
+| roleId      | 角色ID     | 必填。               |
 | identifier  | 角色标识符 | 选填。若空则不修改。 |
 | name        | 角色名称   | 选填。若空则不修改。 |
 | description | 角色描述   | 选填。若空则不修改。 |
@@ -610,9 +610,9 @@ JSON
 - 请求方法：get
 - 请求参数：
 
-| 参数 | 说明   | 备注   |
-| ---- | ------ | ------ |
-| id   | 角色ID | 必填。 |
+| 参数   | 说明   | 备注   |
+| ------ | ------ | ------ |
+| roleId | 角色ID | 必填。 |
 
 - 权限验证：已登录，超级管理员角色
 - 响应数据：
@@ -694,9 +694,9 @@ JSON
 - 请求方法：get
 - 请求参数：
 
-| 参数 | 说明   | 备注   |
-| ---- | ------ | ------ |
-| id   | 权限ID | 必填。 |
+| 参数   | 说明   | 备注   |
+| ------ | ------ | ------ |
+| authId | 权限ID | 必填。 |
 
 - 权限验证：已登录，超级管理员角色
 - 响应数据：
@@ -712,7 +712,7 @@ JSON
 ##### 1.4.3. 编辑权限
 
 - 请求路径：/api/sys/auth/editAuth
-- 请求方法：get
+- 请求方法：post
 - 请求参数：
 
 | 参数        | 说明       | 备注                 |
@@ -789,9 +789,519 @@ JSON
 }
 ```
 
+### 2. oneplatform-todo
 
+待办状态定义：
 
+- draft：草稿
+- submit：已提交(未开始)
+- progress：进行中
+- edit：进行转变更
+- finish：已完成
+- cancel：已取消
 
+#### 2.1. TodoController
 
+##### 2.1.1. 保存草稿/保存变更
 
+- 请求路径：/api/todo/saveDraft
+- 请求方法：post
+- 请求参数：
+
+| 参数         | 说明           | 备注                                   |
+| ------------ | -------------- | -------------------------------------- |
+| id           | 待办ID         | 为null表示新增草稿，非空表示保存草稿。 |
+| category     | 分类           | work：工作待办，daily：日常待办        |
+| name         | 待办名称       |                                        |
+| emergency    | 紧急度         | true / false                           |
+| importance   | 重要性         | true / false                           |
+| deadline     | 截止日期       |                                        |
+| detail       | 待办详情       |                                        |
+| workload     | 工作量评估     |                                        |
+| workloadHour | 工作量（小时） |                                        |
+| workloadDay  | 工作量（天）   |                                        |
+| status       | 状态           | 待办的当前状态                         |
+
+- 权限验证：已登录
+- 响应数据：
+
+###### 保存草稿成功
+
+```json
+{
+    "succ": true,
+    "data": {
+        "todo": {
+            "id": 1,
+            "category": "work",
+            "name": "待办名称",
+            "emergency": true,
+            "importance": true,
+            "deadline": "2023-07-18 12:00:00",
+            "detail": "待办详情",
+            "workload": "工作量评估",
+            "workloadHour": 1.1,
+            "workloadDay": 2,
+            "status": "draft"
+        }
+    }
+}
+```
+
+##### 2.1.2. 提交待办/确认变更
+
+- 请求路径：/api/todo/submitTodo
+- 请求方法：post
+- 请求参数：
+
+| 参数         | 说明           | 备注                                   |
+| ------------ | -------------- | -------------------------------------- |
+| id           | 待办ID         | 为null表示新增草稿，非空表示保存草稿。 |
+| category     | 分类           | work：工作待办，daily：日常待办        |
+| name         | 待办名称       |                                        |
+| emergency    | 紧急度         | true / false                           |
+| importance   | 重要性         | true / false                           |
+| deadline     | 截止日期       |                                        |
+| detail       | 待办详情       |                                        |
+| workload     | 工作量评估     |                                        |
+| workloadHour | 工作量（小时） |                                        |
+| workloadDay  | 工作量（天）   |                                        |
+| status       | 状态           | 待办的当前状态                         |
+
+- 权限验证：已登录
+- 响应数据：
+
+###### 提交待办成功
+
+```json
+{
+    "succ": true,
+    "data": {
+        "todo": {
+            "id": 1,
+            "category": "work",
+            "name": "待办名称",
+            "emergency": true,
+            "importance": true,
+            "deadline": "2023-07-18 12:00:00",
+            "detail": "待办详情",
+            "workload": "工作量评估",
+            "workloadHour": 1.1,
+            "workloadDay": 2,
+            "submitTime": "2023-07-18 12:00:00",
+            "status": "submit",
+            "lastLogId": 1
+        },
+        "todoLogList": [
+            {
+            	"id": 1,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	},
+            {
+            	"id": 2,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	}
+        ]
+    }
+}
+```
+
+##### 2.1.3. 删除草稿
+
+- 请求路径：/api/todo/removeDraft
+- 请求方法：get
+- 请求参数：
+
+| 参数   | 说明             | 备注   |
+| ------ | ---------------- | ------ |
+| todoId | 待删除草稿待办ID | 必填。 |
+
+- 权限验证：已登录
+- 响应数据：
+
+###### 成功删除草稿
+
+##### 2.1.4. 待办切换到开始状态
+
+- 请求路径：/api/todo/toProgress
+- 请求方法：get
+- 请求参数：
+
+| 参数   | 说明   | 备注   |
+| ------ | ------ | ------ |
+| todoId | 待办ID | 必填。 |
+
+- 权限验证：已登录
+- 响应数据：
+
+###### 成功切换到开始状态
+
+```json
+{
+    "succ": true,
+    "data": {
+        "todo": {
+            "beginTime": "2023-07-18 12:00:00",
+            "status": "draft",
+            "lastLogId": 1
+        },
+        "todoLogList": [
+            {
+            	"id": 1,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	},
+            {
+            	"id": 2,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	}
+        ]
+    }
+}
+```
+
+##### 2.1.5. 待办切换到变更状态
+
+- 请求路径：/api/todo/toEdit
+- 请求方法：get
+- 请求参数：
+
+| 参数   | 说明   | 备注   |
+| ------ | ------ | ------ |
+| todoId | 待办ID | 必填。 |
+
+- 权限验证：已登录
+- 响应数据：
+
+###### 成功切换到变更状态
+
+```json
+{
+    "succ": true,
+    "data": {
+        "todo": {
+            "status": "edit",
+            "lastLogId": 1
+        },
+        "todoLogList": [
+            {
+            	"id": 1,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	},
+            {
+            	"id": 2,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	}
+        ]
+    }
+}
+```
+
+##### 2.1.6. 完成待办
+
+- 请求路径：/api/todo/finishTodo
+- 请求方法：post
+- 请求参数：
+
+| 参数       | 说明     | 备注   |
+| ---------- | -------- | ------ |
+| todoId     | 待办ID   | 必填。 |
+| conslusion | 完成结论 |        |
+
+- 权限验证：已登录
+- 响应数据：
+
+###### 成功完成待办
+
+```json
+{
+    "succ": true,
+    "data": {
+        "todo": {
+            "finishTime": "2023-07-18 12:00:00",
+            "status": "finish",
+            "conclusion": "完成结论"
+            "lastLogId": 1
+        },
+        "todoLogList": [
+            {
+            	"id": 1,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	},
+            {
+            	"id": 2,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	}
+        ]
+    }
+}
+```
+
+##### 2.1.7. 取消待办
+
+- 请求路径：/api/todo/cancelTodo
+- 请求方法：post
+- 请求参数：
+
+| 参数       | 说明     | 备注   |
+| ---------- | -------- | ------ |
+| todoId     | 待办ID   | 必填。 |
+| conslusion | 取消原因 |        |
+
+- 权限验证：已登录
+- 响应数据：
+
+###### 成功取消待办
+
+```json
+{
+    "succ": true,
+    "data": {
+        "todo": {
+            "status": "cancel",
+            "conclusion": "取消原因"
+            "lastLogId": 1
+        },
+        "todoLogList": [
+            {
+            	"id": 1,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	},
+            {
+            	"id": 2,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	}
+        ]
+    }
+}
+```
+
+##### 2.1.8. 获取待办列表
+
+- 请求路径：/api/todo/getTodoList
+- 请求方法：get
+- 请求参数：
+
+| 参数     | 说明 | 备注   |
+| -------- | ---- | ------ |
+| category | 分类 | 必填。 |
+
+- 权限验证：已登录
+- 响应数据：
+
+###### 成功获取待办列表
+
+```json
+{
+    "succ": true,
+    "data": {
+        "todoList": [
+            {
+            	"id": 1,
+                "tenant": 1,
+            	"category": "work",
+                "name": "待办名称",
+                "emergency": true,
+            	"importance": true,
+            	"deadline": "2023-07-18 12:00:00",
+            	"detail": "待办详情",
+            	"workload": "工作量评估",
+            	"workloadHour": 1.1,
+            	"workloadDay": 2,
+                "submitTime": "2023-07-18 12:00:00",
+                "beginTime": "2023-07-18 12:00:00",
+                "finishTime": "2023-07-18 12:00:00",
+            	"status": "draft",
+                "conclusion": "完成结论/取消原因",
+                "lastLogId": 1
+        	}
+        ],
+        "lastLogList": [
+            {
+            	"id": 1,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	},
+            {
+            	"id": 2,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	}
+        ]
+    }
+}
+```
+
+##### 2.1.9. 查询待办
+
+- 请求路径：/api/todo/getTodo
+- 请求方法：get
+- 请求参数：
+
+| 参数   | 说明   | 备注   |
+| ------ | ------ | ------ |
+| todoId | 待办ID | 必填。 |
+
+- 权限验证：已登录
+- 响应数据：
+
+###### 成功获取待办列表
+
+```json
+{
+    "succ": true,
+    "data": {
+        "todo": {
+            "id": 1,
+            "tenant": 1,
+            "category": "work",
+            "name": "待办名称",
+            "emergency": true,
+            "importance": true,
+            "deadline": "2023-07-18 12:00:00",
+            "detail": "待办详情",
+            "workload": "工作量评估",
+            "workloadHour": 1.1,
+            "workloadDay": 2,
+            "submitTime": "2023-07-18 12:00:00",
+            "beginTime": "2023-07-18 12:00:00",
+            "finishTime": "2023-07-18 12:00:00",
+            "status": "draft",
+            "conclusion": "完成结论/取消原因",
+            "lastLogId": 1
+        }
+    }
+}
+```
+
+#### 2.2. TodoLogController
+
+##### 2.2.1. 新增进度跟踪记录
+
+- 请求路径：/api/todo/log/addTodoLog
+- 请求方法：post
+- 请求参数：
+
+| 参数   | 说明   | 备注   |
+| ------ | ------ | ------ |
+| todoId | 待办ID | 必填。 |
+| title  | 标题   | 必填。 |
+| log    | 内容   |        |
+
+- 权限验证：已登录
+- 响应数据：
+
+###### 成功新增进度跟踪记录
+
+```json
+{
+    "succ": true,
+    "data": {
+        "todoLogList": [
+            {
+            	"id": 1,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	},
+            {
+            	"id": 2,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	}
+        ]
+    }
+}
+```
+
+##### 2.2.2. 获取待办日志列表
+
+- 请求路径：/api/todo/log/getTodoLogList
+- 请求方法：get
+- 请求参数：
+
+| 参数   | 说明   | 备注   |
+| ------ | ------ | ------ |
+| todoId | 待办ID | 必填。 |
+
+- 权限验证：已登录
+- 响应数据：
+
+###### 成功获取待办日志列表
+
+```json
+{
+    "succ": true,
+    "data": {
+        "todoLogList": [
+            {
+            	"id": 1,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	},
+            {
+            	"id": 2,
+            	"tenant": 1,
+            	"todoId": 1,
+            	"title": "待办进度标题",
+            	"log": "待办进度内容",
+            	"submitTime": "2023-07-18 12:00:00"
+        	}
+        ]
+    }
+}
+```
 

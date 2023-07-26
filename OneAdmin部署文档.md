@@ -1,21 +1,36 @@
 # OneAdmin部署文档
 
-## 1. 部署环境
+## 1. 运行环境部署
 
-- 本地环境`local`：本地PC、笔记本电脑的Docker。
-- 生产环境`run`：远程云服务器的Docker。
+运行环境为公有云服务器，基于Docker容器化部署。
 
-## 2. 部署步骤
+### 1.1. 容器网络
 
-### 2.0. 准备工作
+- oneplatform-access：用于前端访问后端，连接Nginx和服务网关。
 
-创建前后端访问容器网路`oneplatform-access`：
+创建命令：
 
 ```shell
 docker network create oneplatform-access
 ```
 
-### 2.1. 部署Nginx反向代理
+查看命令：
+
+```
+docker network ls
+docker network inspect oneplatform-access
+```
+
+### 1.2. 存储目录结构
+
+- nginx
+    - html
+        - one-admin：存放oneadmin Vue应用的dist目录。
+    - log：存储Nginx运行日志；
+    - nginx.conf：Nginx配置文件；
+    - ssl_cert：存放。
+
+### 1.3. Nginx反向代理
 
 1. 拉取镜像：
 
@@ -49,29 +64,38 @@ docker pull nginx:1.21.6
 docker run --name nginx -d -v /root/nginx/ssl_cert:/etc/nginx/ssl_cert:rw -v /root/nginx/nginx.conf:/etc/nginx/nginx.conf:rw -v /root/nginx/html:/usr/share/nginx/html:rw -v /root/nginx/log:/var/log/nginx:rw -p 80:80/tcp -p 443:443/tcp --net oneplatform-access --restart=unless-stopped -e TZ="Asia/Shanghai" nginx:1.21.6
 ```
 
-### 2.2. 部署Windows本地Nginx反向代理
+### 1.4. OneAdmin
 
-从[https://github.com/FiloSottile/mkcert](https://github.com/FiloSottile/mkcert)下载`mkcert`工具，下载下来的 exe 文件`mkcert-v1.4.4-windows-amd64.exe`重命名为`mkcert.exe`。用它生成证书文件，参考上一节在云服务商获取的SSL证书，为Windows本地开发环境生成crt和key两个文件：
+#### 本地构建项目
 
-```powershell
-.\mkcert.exe -key-file localhost.key -cert-file localhost.crt localhost
+1. 在OneAdmin项目根目录安装软件包：
+
+```shell
+npm install --force
 ```
 
-- `localhost.crt`证书文件
-- `localhost.key`私钥文件
+2. 修改`vue.config.js`文件将代理转发配置设置为服务网关容器：
 
-将这两个文件复制到用来挂载到docker的目录下，我这里是`D:\WyattAppRealmMount\nginx\ssl_cert`，如果用自己的目录只需要调换目录名即可。执行命令运行 Nginx 容器：
-
-```powershell
-docker run --name nginx -d -v D:\WyattAppRealmMount\nginx\ssl_cert:/etc/nginx/ssl_cert:rw -v D:\WyattAppRealmMount\nginx\nginx.conf:/etc/nginx/nginx.conf:rw -v D:\WyattAppRealmMount\nginx\html:/usr/share/nginx/html:rw -v D:\WyattAppRealmMount\nginx\log:/var/log/nginx:rw -p 80:80/tcp -p 443:443/tcp --net oneplatform-access --restart=unless-stopped -e TZ="Asia/Shanghai" nginx:1.21.6
+```js
+devServer: {
+  proxy: {
+    '/api': {
+      target: 'http://oneplatform-gateway:8000/',
+      changeOrigin: true // 允许跨域
+    }
+  }
+}
 ```
 
-打开Windows防火墙的443端口：控制面板→系统和安全→Windows Defender防火墙→高级设置→入站规则→新建规则→端口→下一页→TCP，特地本地端口：443→下一页→允许连接→下一页→域、专用、公用全选→下一页→名称“HTTPS 端口”→完成。
+3. 删除项目根目录中旧的dist目录后，构建项目：
 
-### 2.3. 部署OneAdmin
+```shell
+npm run build
+```
 
-1. 构建项目：在OneAdmin项目根目录执行`npm install --force`安装软件包，然后执行`npm run build`命令构建项目。项目构建完成后会在根目录下生成用来部署的`dist`目录，将目录整个上传到云服务器`/root/nginx/html/one-admin`目录下（如果是本地部署，则复制到`....../nginx/html/one-admin`目录下）。
-2. 配置`/root/nginx/nginx.conf`文件（如果是本地部署，把`wyatt.run`改成`localhost`即可）：
+4. 删除云服务器`/root/nginx/html/one-admin`目录下的`dist`目录后，将构建完成后在根目录下生成的`dist`目录整个上传这里。
+
+5. 配置nginx.conf文件：
 
 ```shell
 # 错误日志打印路径及日志级别
